@@ -1,0 +1,53 @@
+// Daily Profitability Dashboard — Prisma schema (SQLite)
+//
+// Money is stored as Int CENTS to avoid floating-point drift. Operational
+// metrics (units, hours, utilization) are stored as their natural numeric type.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model BusinessUnit {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  productLine String
+  createdAt   DateTime @default(now())
+
+  financials DailyFinancials[]
+  operations DailyOperations[]
+}
+
+/// One row per (date, business unit): the financial side of the P&L.
+model DailyFinancials {
+  id             String   @id @default(cuid())
+  date           DateTime
+  businessUnitId String
+  revenueCents   Int
+  cogsCents      Int
+  opexCents      Int
+
+  businessUnit BusinessUnit @relation(fields: [businessUnitId], references: [id], onDelete: Cascade)
+
+  @@unique([date, businessUnitId])
+  @@index([date])
+}
+
+/// One row per (date, business unit): the operational side of the P&L.
+model DailyOperations {
+  id             String   @id @default(cuid())
+  date           DateTime
+  businessUnitId String
+  unitsProduced  Int
+  laborHours     Float
+  utilizationPct Float
+
+  businessUnit BusinessUnit @relation(fields: [businessUnitId], references: [id], onDelete: Cascade)
+
+  @@unique([date, businessUnitId])
+  @@index([date])
+}
