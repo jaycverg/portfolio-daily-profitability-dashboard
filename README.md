@@ -4,6 +4,16 @@ A daily P&L dashboard for a multi-unit operations business. It turns raw daily f
 
 The signature feature is a **pure, fully unit-tested Daily P&L engine** (`src/lib/profitability.ts`). Every margin, ratio, roll-up, and waterfall is computed by framework-free functions that take plain rows and return plain metrics — so the math is testable in milliseconds and the UI is just a thin renderer over it.
 
+## Screenshots
+
+**Overview dashboard** — KPI cards with day-over-day deltas, the operating-profit trend, a profit waterfall, and the per-business-unit table with sparklines.
+
+![Profitability overview dashboard](docs/01-overview.png)
+
+**Drill-down** — recompute the full P&L and waterfall for any date range and business unit.
+
+![Daily P&L drill-down](docs/02-drilldown.png)
+
 ## Features
 
 - **Profitability Overview** — Top-line stat cards (revenue, gross margin, operating profit, profit/unit) with day-over-day deltas, an operating-profit trend chart, a profit waterfall for the latest day, and a per-business-unit table.
